@@ -2,6 +2,5 @@
 coverage/
 clover.xml
 vendor/
-.env
 composer.lock
 
