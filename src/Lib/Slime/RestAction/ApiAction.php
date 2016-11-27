@@ -45,6 +45,7 @@ abstract class ApiAction extends Action
     protected function manageSlimeException(SlimeException $slimeException)
     {
         $this->manageBaseException($slimeException);
+        $this->payload = $slimeException->getPayload();
     }
 
     protected function manageBaseException(\Exception $baseException)
