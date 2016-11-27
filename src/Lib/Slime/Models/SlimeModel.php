@@ -4,7 +4,7 @@ namespace App\Lib\Slime\Models;
 
 use Illuminate\Database\Eloquent\Model as Eloquent;
 
-class SlimeModel extends Eloquent
+abstract class SlimeModel extends Eloquent
 {
 
     protected $hidden = [
