@@ -7,7 +7,7 @@ namespace App\Lib\Helpers;
 use App\Lib\Slime\Exceptions\Http\UnprocessableEntityException;
 use App\Lib\Slime\Models\CrudModel;
 
-class Validator
+class ValidationHelper
 {
 
     private static function validate(array $requestBody, CrudModel $modelClass, $forcedField = [])
@@ -15,8 +15,9 @@ class Validator
         $fields = self::extractFromRequest($requestBody, $modelClass, $forcedField);
         $fields = array_merge($fields, $forcedField);
         $validation = $modelClass->validate($fields);
-        if (!$validation->isValid()) {
-            throw new UnprocessableEntityException($validation->errors());
+        $messages = $validation->getMessages();
+        if (!empty($messages)) {
+            throw new UnprocessableEntityException($messages);
         }
 
         return $fields;

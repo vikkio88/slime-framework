@@ -2,8 +2,8 @@
 
 
 namespace App\Lib\Slime\Models;
-use App\Lib\Helpers\Validation;
 
+use Sirius\Validation\Validator;
 
 /**
  * Class CrudModel
@@ -15,12 +15,11 @@ abstract class CrudModel extends SlimeModel
      * @var array
      */
     protected $rules = [];
-    private $validator;
+    private $validator = null;
 
     public function __construct(array $attributes = [])
     {
         parent::__construct($attributes);
-        //$this->validator = new Validator();
     }
 
 
@@ -29,6 +28,8 @@ abstract class CrudModel extends SlimeModel
      */
     protected function rules()
     {
+        return $this->rules;
+        /*
         $rules = $this->rules;
         if (!empty($this->id)) { //if we are on updating process
             foreach ($rules as $field => $rule) {
@@ -37,12 +38,19 @@ abstract class CrudModel extends SlimeModel
                 }
             }
         }
+
         return $rules;
+        */
     }
 
     public function validate(array $data)
     {
-        return Validation::validate($this->rules(), $data);
+        if ($this->validator === null) {
+            $this->validator = new Validator();
+            $this->validator->add($this->rules());
+        }
+        $this->validator->validate($data);
+        return $this->validator;
     }
 
 }

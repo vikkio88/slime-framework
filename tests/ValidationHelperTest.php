@@ -1,14 +1,14 @@
 <?php
 
 
-use App\Lib\Helpers\Validator;
+use App\Lib\Helpers\ValidationHelper;
 use Tests\Helpers\Stubs\CrudExample;
 
-class ValidatorTest extends PHPUnit_Framework_TestCase
+class ValidationHelperTest extends PHPUnit_Framework_TestCase
 {
     /**
      * @group Helpers
-     * @group Validator
+     * @group ValidationHelper
      */
     public function testExtractTheCorrectFields()
     {
@@ -18,7 +18,7 @@ class ValidatorTest extends PHPUnit_Framework_TestCase
             'stuff' => 'nope',
             'stuff1' => 'nope'
         ];
-        $savedFields = Validator::validateAndCreate(
+        $savedFields = ValidationHelper::validateAndCreate(
             $body,
             $exampleCrud,
             [

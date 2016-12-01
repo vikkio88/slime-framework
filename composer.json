@@ -12,6 +12,7 @@
     "require": {
         "slim/slim": "^3.0",
         "illuminate/database": "*",
+        "siriusphp/validation": "dev-master",
         "vlucas/phpdotenv": "^2.3"
     },
     "require-dev": {
