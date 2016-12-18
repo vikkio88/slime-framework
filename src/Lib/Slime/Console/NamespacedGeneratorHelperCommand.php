@@ -29,18 +29,18 @@ abstract class NamespacedGeneratorHelperCommand extends GeneratorHelperCommand
 
     private function directoriesFromNameSpace()
     {
-        if (empty($this->namespaceStruct)) {
-            $fullParam = $this->getArg(0);
-            $this->namespaceStruct = explode('\\', $fullParam);
-            $this->filenameRoot = array_pop($this->namespaceStruct);
-            $this->namespaceStruct = array_map(
-                function ($element) {
-                    return TextFormatter::snakeToCamelCase($element);
-                },
-                $this->namespaceStruct
-            );
-        }
-        return implode(DIRECTORY_SEPARATOR, $this->namespaceStruct) . DIRECTORY_SEPARATOR;
+
+        $fullParam = $this->getArg(0);
+        $this->namespaceStruct = explode('\\', $fullParam);
+        $this->filenameRoot = array_pop($this->namespaceStruct);
+        $this->namespaceStruct = array_map(
+            function ($element) {
+                return TextFormatter::snakeToCamelCase($element);
+            },
+            $this->namespaceStruct
+        );
+
+        return empty($this->namespaceStruct) ? '' : implode(DIRECTORY_SEPARATOR, $this->namespaceStruct) . DIRECTORY_SEPARATOR;
     }
 
     private function createDirectoriesFromNamespace()
