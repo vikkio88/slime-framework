@@ -5,16 +5,10 @@ namespace App\Lib\Slime\Console\Commands;
 
 
 use App\Lib\Helpers\TextFormatter;
-use App\Lib\Slime\Console\GeneratorHelperCommand;
+use App\Lib\Slime\Console\NamespacedGeneratorHelperCommand;
 
-class CreateModelCommand extends GeneratorHelperCommand
+class CreateModelCommand extends NamespacedGeneratorHelperCommand
 {
-    protected function getFileName()
-    {
-        return TextFormatter::snakeToCamelCase($this->getArg(0));
-    }
-
-
     protected function getHead()
     {
         $fileHead = parent::getHead();
@@ -33,6 +27,4 @@ class CreateModelCommand extends GeneratorHelperCommand
         TextFormatter::snakeToCamelCase($this->getArg(0)) .
         ' extends SlimeModel {' . PHP_EOL . '}';
     }
-
-
 }

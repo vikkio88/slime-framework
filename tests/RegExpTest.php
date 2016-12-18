@@ -41,4 +41,17 @@ class RegExpTest extends PHPUnit_Framework_TestCase
         preg_match_all($rgx, $text, $matchesPreg);
         $this->assertEquals($matchesPreg, RegExp::getAllMatch($rgx, $text));
     }
+
+    /**
+     * @group Helpers
+     * @group Regexp
+     * @group matchoneescaped
+     */
+    public function testItReturnsPregMatchesWithEscaped()
+    {
+        $text = "user\\user";
+        $rgx = '/\\\(.+?)$/';
+        $expected = 'user';
+        $this->assertEquals($expected, RegExp::getFirstMatch($rgx, $text));
+    }
 }

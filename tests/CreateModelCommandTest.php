@@ -31,4 +31,21 @@ class CreateModelCommandTest extends PHPUnit_Framework_TestCase
         $this->filesCreated = array_merge($this->filesCreated, $files);
     }
 
+    /**
+     * @group Novice
+     * @group Commands
+     * @group CreateModel
+     * @group NamespacedModel
+     */
+    public function testItCreatedNamespacedModels()
+    {
+        $param = 'users\test\stuff\user';
+        $expectedFile = $this->modelPath . 'Users/Test/Stuff/User.php';
+        $command = new CreateModelCommand([$param]);
+        $result = $command->run();
+        $this->assertEquals(0, $result);
+        $this->assertFileExists($expectedFile);
+        $this->filesCreated[] = $expectedFile;
+    }
+
 }

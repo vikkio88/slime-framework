@@ -48,7 +48,7 @@ abstract class GeneratorHelperCommand extends SlimeCommand
         return "";
     }
 
-    private function getFullFileName()
+    protected function getFullFileName()
     {
         $filePath = $this->getFilePath();
         if (!$this->checkDir($filePath)) {
