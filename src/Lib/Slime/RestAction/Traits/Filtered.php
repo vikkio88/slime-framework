@@ -7,7 +7,7 @@ use App\Lib\Slime\Models\SlimeModel;
 trait Filtered
 {
 
-    public static function getFromRequest(SlimeModel $model, array $params)
+    public function getFromRequest(SlimeModel $model, array $params)
     {
         $query = $model->select();
         $acceptedFilters = $model->getAcceptedFilters();
@@ -22,12 +22,14 @@ trait Filtered
                     $configurations[$filterName]['type'] == 'children'
                 ) {
 
-                    $childrenIds[] = self::getIdsFromChildren(
-                        $configurations[$filterName]['table'],
-                        $configurations[$filterName]['parent_id'],
-                        $configurations[$filterName]['col'],
-                        $configurations[$filterName]['op'],
-                        $params[$filterName]
+                    $childrenIds[] = $this->getIdsFromChildren(
+                        [
+                            $configurations[$filterName]['table'],
+                            $configurations[$filterName]['parent_id'],
+                            $configurations[$filterName]['col'],
+                            $configurations[$filterName]['op'],
+                            $params[$filterName]
+                        ]
                     );
                 } else {
                     $query->where(
@@ -46,26 +48,8 @@ trait Filtered
         return $query;
     }
 
-    /**
-     * @param $tableName
-     * @param $parentId
-     * @param $column
-     * @param $operation
-     * @param $param
-     * @return array
-     */
-    public
-    static function getIdsFromChildren($tableName, $parentId, $column, $operation, $param)
+    public function getIdsFromChildren(array $params = [])
     {
-        $queryResult = \DB::table($tableName)
-            ->select($parentId)
-            ->where($column, $operation, $param)
-            ->get();
-        $result = [];
-        foreach ($queryResult as $item) {
-            $result[] = $item->$parentId;
-        }
-
-        return $result;
+        return $params;
     }
 }
