@@ -38,7 +38,6 @@ abstract class CrudModel extends SlimeModel
                 }
             }
         }
-
         return $rules;
         */
     }

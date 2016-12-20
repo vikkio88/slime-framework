@@ -3,11 +3,13 @@
 namespace App\Lib\Slime\RestAction\Traits;
 
 use App\Lib\Helpers\Config;
-use App\Lib\Slime\Models\SlimeModel;
 
 trait Pagination
 {
-    public function filter(SlimeModel $request)
+    protected $pageParam = 'p';
+    protected $limitParam = 'l';
+
+    public function getPaginationParams($request)
     {
         $page = $request->getParam(
             $this->pageParam,
