@@ -7,6 +7,7 @@ namespace App\Lib\Slime\RestAction;
 use App\Lib\Helpers\Responder;
 use App\Lib\Slime\Exceptions\SlimeException;
 use App\Lib\Slime\RestAction\UseCase\Action;
+use Slim\Http\Request;
 
 abstract class ApiAction extends Action
 {
@@ -72,5 +73,14 @@ abstract class ApiAction extends Action
     {
         $json = $this->request->getBody();
         return json_decode($json, true);
+    }
+
+    protected function getQueryParams()
+    {
+        if ($this->request instanceof Request) {
+            return $this->request->getQueryParams();
+        }
+
+        return [];
     }
 }
