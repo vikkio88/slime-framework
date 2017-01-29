@@ -18,4 +18,16 @@ class JwtHelperTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($payload, JwtHelper::decode($encoded));
     }
 
+    /**
+     * @group Helpers
+     * @group JwtHelper
+     */
+    public function testReturnsNullOnInvalidToken()
+    {
+        $payload = ['some' => 'junk'];
+        $encoded = JwtHelper::encode($payload);
+        $encoded .= 'a';
+        $this->assertEmpty(JwtHelper::decode($encoded));
+    }
+
 }

@@ -2,6 +2,7 @@
 namespace App\Lib\Helpers;
 
 use Firebase\JWT\JWT;
+use Firebase\JWT\SignatureInvalidException;
 
 class JwtHelper
 {
@@ -15,6 +16,10 @@ class JwtHelper
     public static function decode($token)
     {
         $key = Config::get('app.key');
-        return (array)JWT::decode($token, $key, ['HS256']);
+        try {
+            return (array)JWT::decode($token, $key, ['HS256']);
+        } catch (SignatureInvalidException $e) {
+            return null;
+        }
     }
 }
