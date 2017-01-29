@@ -6,4 +6,5 @@ return [
             'displayErrorDetails' => true,
         ]
     ],
+    'key' => 'some_random_key'
 ];
