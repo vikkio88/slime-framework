@@ -36,8 +36,7 @@ class TokenHelperTest extends PHPUnit_Framework_TestCase
      */
     public function testGeneratingANewRandomToken()
     {
-        $token = TokenHelper::generateRandomToken();
-        echo $token;
+        $this->assertNotEmpty(TokenHelper::generateRandomToken());
     }
 
 }
