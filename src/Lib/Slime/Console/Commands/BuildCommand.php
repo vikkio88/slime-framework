@@ -33,10 +33,15 @@ class BuildCommand extends SlimeCommand
      */
     public function run()
     {
+        $this->logInfo('Cleaning dist Folder');
         $this->refreshDistDir();
+        $this->logInfo('Copying Project files');
         $this->copyProjectStructure();
+        $this->logInfo('Running composer');
         $this->runInstall();
+        $this->logInfo('Cleaning-up vendor/');
         $this->runVendorClean();
+        $this->logInfo("Done, don't forget to check the .env file");
     }
 
     private function refreshDistDir()
@@ -49,15 +54,13 @@ class BuildCommand extends SlimeCommand
 
     private function rmrdir($folderName)
     {
-        array_map('unlink', glob("$folderName/*.*"));
-        rmdir($folderName);
-
+        exec('rm -rf ' . $folderName);
     }
 
     private function copyProjectStructure()
     {
         foreach ($this->mainFiles as $file) {
-            copy($file, self::DIST_FOLDER);
+            copy($file, self::DIST_FOLDER . $file);
         }
 
         foreach ($this->projectFolders as $folder) {
@@ -90,6 +93,15 @@ class BuildCommand extends SlimeCommand
     private function runVendorClean()
     {
         exec('cd ' . self::DIST_FOLDER . ' && ' . self::VENDOR_CLEAN);
+    }
+
+    private function logInfo($message)
+    {
+        if ($this->getArg(0) !== '-v') {
+            return;
+        }
+
+        echo (new \DateTime())->format('Y-m-d H:i:s') . ' --- ' . $message . PHP_EOL;
     }
 
 }
