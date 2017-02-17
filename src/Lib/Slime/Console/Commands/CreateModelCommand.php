@@ -12,7 +12,13 @@ class CreateModelCommand extends NamespacedGeneratorHelperCommand
     protected function getHead()
     {
         $fileHead = parent::getHead();
-        $fileHead .= PHP_EOL . 'namespace App\Models;' . PHP_EOL . 'use App\Lib\Slime\Models\SlimeModel;' . PHP_EOL;
+        $fileHead .= PHP_EOL
+            . 'namespace App\Models'
+            . (count($this->namespaceStruct) ? '\\' : '')
+            . implode('\\', $this->namespaceStruct)
+            . ';' . PHP_EOL
+            . 'use App\Lib\Slime\Models\SlimeModel;'
+            . PHP_EOL;
         return $fileHead;
     }
 
@@ -24,7 +30,7 @@ class CreateModelCommand extends NamespacedGeneratorHelperCommand
     protected function getStub()
     {
         return PHP_EOL . 'class ' .
-        TextFormatter::snakeToCamelCase($this->getArg(0)) .
-        ' extends SlimeModel {' . PHP_EOL . '}';
+            TextFormatter::snakeToCamelCase($this->filenameRoot) .
+            ' extends SlimeModel {' . PHP_EOL . '}';
     }
 }
