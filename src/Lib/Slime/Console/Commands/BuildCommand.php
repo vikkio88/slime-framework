@@ -4,6 +4,7 @@
 namespace App\Lib\Slime\Console\Commands;
 
 
+use App\Lib\Helpers\Config;
 use App\Lib\Slime\Console\SlimeCommand;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
@@ -12,7 +13,6 @@ class BuildCommand extends SlimeCommand
 {
     const DIST_FOLDER = './dist/';
     const COMPOSER_INSTALL = 'composer install --no-ansi --no-dev --no-interaction --no-progress --no-scripts --optimize-autoloader';
-    const VENDOR_CLEAN = 'php vendor/mediamonks/composer-vendor-cleaner/bin/clean';
     protected $projectFolders = [
         'Actions',
         'config',
@@ -28,6 +28,21 @@ class BuildCommand extends SlimeCommand
         'index.php'
     ];
 
+    public function __construct(array $args)
+    {
+        parent::__construct($args);
+
+        $this->projectFolders = array_merge(
+            $this->projectFolders,
+            Config::get('build.folders')
+        );
+
+        $this->mainFiles = array_merge(
+            $this->mainFiles,
+            Config::get('build.files')
+        );
+    }
+
     /**
      * @return int
      */
@@ -39,8 +54,6 @@ class BuildCommand extends SlimeCommand
         $this->copyProjectStructure();
         $this->logInfo('Running composer');
         $this->runInstall();
-        $this->logInfo('Cleaning-up vendor/');
-        $this->runVendorClean();
         $this->logInfo("Done, don't forget to check the .env file");
     }
 
@@ -88,11 +101,6 @@ class BuildCommand extends SlimeCommand
     {
         exec('cd ' . self::DIST_FOLDER . ' && ' . self::COMPOSER_INSTALL);
         exec('cd ..');
-    }
-
-    private function runVendorClean()
-    {
-        exec('cd ' . self::DIST_FOLDER . ' && ' . self::VENDOR_CLEAN);
     }
 
     private function logInfo($message)
