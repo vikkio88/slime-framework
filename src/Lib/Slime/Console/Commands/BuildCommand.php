@@ -37,13 +37,25 @@ class BuildCommand extends SlimeCommand
         'Test',
         'Tests',
         'docs',
+        'tools',
+        'doc',
+        'ext',
+        '.github'
     ];
 
     protected $vendorFilesToRemove = [
         '.gitignore',
+        '.gitattributes',
+        '.editorconfig',
+        'CHANGELOG',
         '.travis.yml',
         'README.md',
-        'phpunit.xml'
+        'readme.md',
+        'README.rst',
+        'phpunit.xml',
+        'phpunit.xml.dist',
+        '.php_cs',
+        '.php_cs.dist',
     ];
 
     public function __construct(array $args)
