@@ -61,4 +61,10 @@ abstract class NamespacedGeneratorHelperCommand extends GeneratorHelperCommand
         }
     }
 
+    protected function getNamespaceString()
+    {
+        return (count($this->namespaceStruct) ? '\\' : '')
+            . implode('\\', $this->namespaceStruct);
+    }
+
 }

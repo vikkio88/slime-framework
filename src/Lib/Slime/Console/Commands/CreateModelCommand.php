@@ -14,8 +14,7 @@ class CreateModelCommand extends NamespacedGeneratorHelperCommand
         $fileHead = parent::getHead();
         $fileHead .= PHP_EOL
             . 'namespace App\Models'
-            . (count($this->namespaceStruct) ? '\\' : '')
-            . implode('\\', $this->namespaceStruct)
+            . $this->getNamespaceString()
             . ';' . PHP_EOL
             . 'use App\Lib\Slime\Models\SlimeModel;'
             . PHP_EOL;
