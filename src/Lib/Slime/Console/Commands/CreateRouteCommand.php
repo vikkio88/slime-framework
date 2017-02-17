@@ -22,14 +22,8 @@ class CreateRouteCommand extends GeneratorHelperCommand
     {
         return PHP_EOL .
         '$api->get(\'/'.$this->getArg(0).'\', function ($request, $response, $args) {
-            return (
-                new SOMEACTION(
-                    $request,
-                    $response,
-                    $args
-                )
-             )->execute();
-             });'
+            return(new SOMEACTION($request,$response,$args))->execute();
+         });'
         . PHP_EOL;
     }
 
