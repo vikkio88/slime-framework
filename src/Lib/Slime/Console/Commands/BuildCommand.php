@@ -13,6 +13,7 @@ class BuildCommand extends SlimeCommand
 {
     const DIST_FOLDER = './dist/';
     const COMPOSER_INSTALL = 'composer install --no-ansi --no-dev --no-interaction --no-progress --no-scripts --optimize-autoloader';
+    const DIST_VENDOR = './dist/vendor/';
     protected $projectFolders = [
         'Actions',
         'config',
@@ -28,19 +29,27 @@ class BuildCommand extends SlimeCommand
         'index.php'
     ];
 
+    protected $vendorFolderToRemove = [
+        '.git',
+        'examples',
+        'tests',
+        'test',
+        'Test',
+        'Tests',
+        'docs',
+    ];
+
+    protected $vendorFilesToRemove = [
+        '.gitignore',
+        '.travis.yml',
+        'README.md',
+        'phpunit.xml'
+    ];
+
     public function __construct(array $args)
     {
         parent::__construct($args);
-
-        $this->projectFolders = array_merge(
-            $this->projectFolders,
-            Config::get('build.folders')
-        );
-
-        $this->mainFiles = array_merge(
-            $this->mainFiles,
-            Config::get('build.files')
-        );
+        $this->mergeConfigs();
     }
 
     /**
@@ -54,6 +63,8 @@ class BuildCommand extends SlimeCommand
         $this->copyProjectStructure();
         $this->logInfo('Running composer');
         $this->runInstall();
+        $this->logInfo('Cleaning vendor/');
+        $this->cleanVendor();
         $this->logInfo("Done, don't forget to check the .env file");
     }
 
@@ -63,6 +74,10 @@ class BuildCommand extends SlimeCommand
             $this->rmrdir(self::DIST_FOLDER);
         }
         mkdir(self::DIST_FOLDER);
+        if ($this->getArg(0) === 'clean') {
+            echo "dist/ folder cleaned up" . PHP_EOL;
+            exit(0);
+        }
     }
 
     private function rmrdir($folderName)
@@ -110,6 +125,47 @@ class BuildCommand extends SlimeCommand
         }
 
         echo (new \DateTime())->format('Y-m-d H:i:s') . ' --- ' . $message . PHP_EOL;
+    }
+
+    private function cleanVendor()
+    {
+        $allVendors = glob(self::DIST_VENDOR . '*', GLOB_ONLYDIR);
+        foreach ($allVendors as $vendor) {
+            $packages = glob($vendor . '/*', GLOB_ONLYDIR);
+            foreach ($packages as $package) {
+                foreach ($this->vendorFilesToRemove as $file) {
+                    $fullPath = $package . '/' . $file;
+                    if (file_exists($fullPath)) {
+                        $this->logInfo('Removing file: ' . $fullPath);
+                        unlink($fullPath);
+                    }
+                }
+
+                foreach ($this->vendorFolderToRemove as $folder) {
+                    $fullPath = $package . '/' . $folder;
+                    if (is_dir($fullPath)) {
+                        $this->logInfo('Removing dir: ' . $fullPath);
+                        exec('rm -rf ' . $fullPath);
+                    }
+                }
+            }
+        }
+    }
+
+    private function mergeConfigs()
+    {
+        $this->projectFolders = $this->mergeConfig($this->projectFolders, 'build.folders');
+        $this->mainFiles = $this->mergeConfig($this->mainFiles, 'build.files');
+        $this->vendorFolderToRemove = $this->mergeConfig($this->mainFiles, 'build.vendorFolders');
+        $this->vendorFilesToRemove = $this->mergeConfig($this->mainFiles, 'build.vendorFiles');
+    }
+
+    private function mergeConfig($localConfig, $configKey)
+    {
+        return array_merge(
+            $localConfig,
+            Config::get($configKey)
+        );
     }
 
 }
