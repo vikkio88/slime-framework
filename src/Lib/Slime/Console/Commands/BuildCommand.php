@@ -17,7 +17,6 @@ class BuildCommand extends SlimeCommand
     protected $projectFolders = [
         'Actions',
         'config',
-        'database',
         'Lib',
         'Models',
         'routes',
