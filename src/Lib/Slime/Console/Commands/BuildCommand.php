@@ -52,10 +52,19 @@ class BuildCommand extends SlimeCommand
         'README.md',
         'readme.md',
         'README.rst',
+        'CONTRIBUTE.md',
+        'CONTRIBUTING.md',
+        'LICENSE.md',
+        'phpcs.xml',
         'phpunit.xml',
         'phpunit.xml.dist',
         '.php_cs',
         '.php_cs.dist',
+        'composer.json',
+        '.env',
+        '.htaccess',
+        'index.php',
+        'test.php'
     ];
 
     public function __construct(array $args)
@@ -132,7 +141,7 @@ class BuildCommand extends SlimeCommand
 
     private function logInfo($message)
     {
-        if ($this->getArg(0) !== '-v') {
+        if (!$this->hasArg('-v') || !$this->hasArg('--verbose')) {
             return;
         }
 
@@ -168,8 +177,8 @@ class BuildCommand extends SlimeCommand
     {
         $this->projectFolders = $this->mergeConfig($this->projectFolders, 'build.folders');
         $this->mainFiles = $this->mergeConfig($this->mainFiles, 'build.files');
-        $this->vendorFolderToRemove = $this->mergeConfig($this->mainFiles, 'build.vendorFolders');
-        $this->vendorFilesToRemove = $this->mergeConfig($this->mainFiles, 'build.vendorFiles');
+        $this->vendorFolderToRemove = $this->mergeConfig($this->vendorFolderToRemove, 'build.vendorFolders');
+        $this->vendorFilesToRemove = $this->mergeConfig($this->vendorFilesToRemove, 'build.vendorFiles');
     }
 
     private function mergeConfig($localConfig, $configKey)

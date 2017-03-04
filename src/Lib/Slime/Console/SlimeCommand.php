@@ -37,4 +37,9 @@ abstract class SlimeCommand implements ConsoleCommand
     {
         return isset($this->args[$position]) ? $this->args[$position] : null;
     }
+
+    protected function hasArg($arg)
+    {
+        return in_array($arg, $this->args);
+    }
 }
