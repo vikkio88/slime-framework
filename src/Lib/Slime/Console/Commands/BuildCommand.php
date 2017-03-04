@@ -31,6 +31,7 @@ class BuildCommand extends SlimeCommand
 
     protected $vendorFolderToRemove = [
         '.git',
+        'example',
         'examples',
         'tests',
         'test',
