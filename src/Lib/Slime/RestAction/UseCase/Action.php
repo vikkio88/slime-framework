@@ -6,10 +6,11 @@ namespace App\Lib\Slime\RestAction\UseCase;
 
 use App\Lib\Slime\Exceptions\SlimeException;
 use App\Lib\Slime\Interfaces\UseCase\IAction;
+use App\Lib\Slime\Interfaces\UseCase\ICallable;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 
-abstract class Action implements IAction
+abstract class Action implements IAction, ICallable
 {
     protected $args;
     protected $request;
@@ -19,15 +20,16 @@ abstract class Action implements IAction
 
     ];
 
-    public function __construct(
-        RequestInterface $request = null,
-        ResponseInterface $response = null,
+    public function __invoke(
+        RequestInterface $request,
+        ResponseInterface $response,
         array $args = []
     )
     {
         $this->args = $args;
         $this->request = $request;
         $this->response = $response;
+        $this->execute();
     }
 
     public function execute()
