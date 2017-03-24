@@ -21,9 +21,7 @@ class CreateRouteCommand extends GeneratorHelperCommand
     protected function getStub()
     {
         return PHP_EOL .
-        '$api->get(\'/'.$this->getArg(0).'\', function ($request, $response, $args) {
-            return(new SOMEACTION($request,$response,$args))->execute();
-         });'
+        '$api->get(\'/'.$this->getArg(0).'\', SOMEACTION::class);'
         . PHP_EOL;
     }
 
