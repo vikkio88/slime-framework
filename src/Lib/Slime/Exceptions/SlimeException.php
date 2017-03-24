@@ -5,7 +5,7 @@ namespace App\Lib\Slime\Exceptions;
 
 use Exception;
 
-class SlimeException extends \Exception
+class SlimeException extends Exception
 {
     protected $code = 500;
     protected $message = "Ops!";
