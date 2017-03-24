@@ -25,12 +25,12 @@ class RestActionTest extends PHPUnit_Framework_TestCase
      */
     public function testReturningCorrectIFace()
     {
-        $action = new \Tests\Helpers\Stubs\ActionStub(
+        $action = new \Tests\Helpers\Stubs\ActionStub();
+        $result = $action->__invoke(
             $this->getMock(RequestInterface::class),
             new ResponseStub(),
             []
         );
-        $result = $action->execute();
         $this->assertInstanceOf(ResponseInterface::class, $result);
     }
 

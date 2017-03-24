@@ -29,7 +29,7 @@ abstract class Action implements IAction, ICallable
         $this->args = $args;
         $this->request = $request;
         $this->response = $response;
-        $this->execute();
+        return $this->execute();
     }
 
     public function execute()

@@ -15,7 +15,8 @@ class ApiActionTest extends PHPUnit_Framework_TestCase
      */
     public function testThatSettingSomeDataItWillGiveItBack()
     {
-        $apiAction = new ApiActionStub(
+        $apiAction = new ApiActionStub();
+        $apiAction->__invoke(
             $this->getMock(RequestInterface::class),
             new ResponseStub(),
             []
@@ -34,7 +35,8 @@ class ApiActionTest extends PHPUnit_Framework_TestCase
      */
     public function testThatThrowingAnExceptionWillBeCatchAndFormatted()
     {
-        $apiAction = new ApiActionExceptionStub(
+        $apiAction = new ApiActionExceptionStub();
+        $apiAction->__invoke(
             $this->getMock(RequestInterface::class),
             new ResponseStub(),
             []
@@ -47,6 +49,4 @@ class ApiActionTest extends PHPUnit_Framework_TestCase
         $jsonBody = json_decode($body);
         $this->assertEquals($code, $jsonBody->code);
     }
-
-
 }
