@@ -13,7 +13,7 @@ class SlimeException extends \Exception
 
     public function __construct($message = null)
     {
-        $message = $message || $this->message;
+        $message = $message ?: $this->message;
         parent::__construct($message, $this->code);
     }
 

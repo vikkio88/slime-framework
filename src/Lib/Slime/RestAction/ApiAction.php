@@ -11,6 +11,7 @@ use Slim\Http\Request;
 
 abstract class ApiAction extends Action
 {
+    const OK_CODE = 200;
     protected $code;
     protected $message;
     protected $payload;
@@ -18,7 +19,7 @@ abstract class ApiAction extends Action
 
     protected function init()
     {
-        $this->code = 200;
+        $this->code = self::OK_CODE;
         $this->message = "OK";
         $this->payload = null;
     }
@@ -37,6 +38,7 @@ abstract class ApiAction extends Action
     {
         $bodyContent = $this->buildBody();
 
+        $this->response = $this->response->withStatus($this->code);
         $this->response = Responder::getJsonResponse(
             $bodyContent,
             $this->response
