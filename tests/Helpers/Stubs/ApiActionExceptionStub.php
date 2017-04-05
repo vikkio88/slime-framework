@@ -9,6 +9,10 @@ use App\Lib\Slime\RestAction\ApiAction;
 
 class ApiActionExceptionStub extends ApiAction
 {
+    protected function formatResponse()
+    {
+
+    }
 
     protected function performAction()
     {
