@@ -12,6 +12,7 @@ use Slim\Http\Request;
 abstract class ApiAction extends Action
 {
     const OK_CODE = 200;
+    const INTERNAL_SERVER_ERROR_CODE = 500;
     protected $code;
     protected $message;
     protected $payload;
@@ -53,7 +54,7 @@ abstract class ApiAction extends Action
 
     protected function manageBaseException(\Exception $baseException)
     {
-        $this->code = $baseException->getCode();
+        $this->code = self::INTERNAL_SERVER_ERROR_CODE;
         $this->message = $baseException->getMessage();
     }
 
